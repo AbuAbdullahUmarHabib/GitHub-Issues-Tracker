@@ -4,8 +4,18 @@ const allOpenIssues = document.getElementById("openIssues");
 const closedIssues = document.getElementById("closeIssues");
 const allIssues = document.getElementById("allIssues");
 const searchInput = document.getElementById("searchInput");
-
 const searchBtn = document.getElementById("searchBtn");
+
+// modal related IDs
+const issueDetails = document.getElementById("issueDetails");
+const issueTitle = document.getElementById("issueTitle");
+const issueStatusBadge = document.getElementById("issueStatusBadge");
+const issueAuthor = document.getElementById("issueAuthor");
+const issueCreatedDate = document.getElementById("issueCreatedDate");
+const issueLabel = document.getElementById("issueLabel");
+const issueDescription = document.getElementById("issueDescription");
+const issueAssignee = document.getElementById("issueAssignee");
+const issuePriority = document.getElementById("issuePriority");
 
 async function dataFetching() {
   const res = await fetch(
@@ -25,6 +35,12 @@ async function dataFetching() {
 
   allIssuesTab(data.data);
 }
+
+function displayModal(issue) {
+  issueDetails.showModal();
+  console.log("hello", issue);
+}
+
 function loadData(data) {
   data.forEach((issue) => {
     const div = document.createElement("div");
@@ -42,8 +58,8 @@ function loadData(data) {
 
     const borderClass =
       border[issue.status.toLowerCase()] || "border-yellow-500";
-
-    const card = `                <div class="card bg-base-100 shadow-sm">
+    const card = `          
+        <div onclick="displayModal(${issue.title})" class="card bg-base-100 shadow-sm">
                     <div class="card-body border-t-4 ${borderClass} rounded-xl priority">
                         <div class="flex justify-between">
                             <div class="size-6 rounded-full"><img src="${priorityImg}" alt="" /> </div>
@@ -130,6 +146,7 @@ function openIssues(openData) {
     loadData(openData);
   });
 }
+
 function closeIssues(closedData) {
   closedIssues.addEventListener("click", function () {
     allIssues.classList.remove("btn-primary", "btn-outline");
@@ -141,6 +158,7 @@ function closeIssues(closedData) {
     loadData(closedData);
   });
 }
+
 function allIssuesTab(data) {
   allIssues.addEventListener("click", function () {
     allIssues.classList.remove("btn-primary", "btn-outline");
@@ -155,15 +173,21 @@ function allIssuesTab(data) {
 
 function searchData() {
   searchBtn.addEventListener("click", async function () {
+    const search = searchInput.value.trim();
+    tasks.innerHTML = "";
     const find = await fetch(
-      `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchInput.value}`,
+      `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${search}`,
     );
     const data = await find.json();
-    console.log(data);
-    tasks.innerHTML = "";
+    if (search == "") {
+      dataFetching();
+      return;
+    }
     loadData(data.data);
+    console.log(data);
   });
 }
+
 searchData();
 dataFetching();
 
