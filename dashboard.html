@@ -90,7 +90,7 @@
                             <img src="./assets/Aperture.png" alt="" class="h-12 w-12">
                         </div>
                         <div>
-                            <h3 class="font-bold text-base">50 Issues</h3>
+                            <h3 class="font-bold text-base"> <span id="total-task">0</span> Issues</h3>
                             <p class="text-center text-neutral-500 text-sm">Track and manage your project issues</p>
                         </div>
                     </div>
@@ -110,8 +110,9 @@
             </div>
             <!-- Task -->
 
-            <section class="mt-10 grid grid-cols-4 sm:grid-cols-2 md:grid-cols-3">
-                <div class="card bg-base-100 shadow-sm">
+            <section id="tasks" class="mt-10 grid md:grid-cols-4 sm:grid-cols-2 gap-4">
+                <!-- cards -->
+                <!-- <div class="card bg-base-100 shadow-sm">
                     <div class="card-body border-t-4 border-green-500 rounded-xl">
                         <div class="flex justify-between">
                             <div class="badge h-6 w-6 badge-soft badge-success rounded-full"><i
@@ -141,7 +142,8 @@
                         </div>
 
                     </div>
-                </div>
+                </div> -->
+
             </section>
 
 
@@ -150,7 +152,7 @@
 
 
     </main>
-
+    <script src="./scripts/dashboard.js"></script>
 </body>
 
 </html>
