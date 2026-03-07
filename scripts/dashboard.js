@@ -34,14 +34,19 @@ function loadData(data) {
       closed: "border-secondary",
     };
 
+    const priorityStatus = {
+      open: "./assets/Open-Status.png",
+      closed: "./assets/Closed-Status.png",
+    };
+    const priorityImg = priorityStatus[issue.status.toLowerCase()];
+
     const borderClass =
       border[issue.status.toLowerCase()] || "border-yellow-500";
 
     const card = `                <div class="card bg-base-100 shadow-sm">
                     <div class="card-body border-t-4 ${borderClass} rounded-xl priority">
                         <div class="flex justify-between">
-                            <div class="badge h-6 w-6 badge-soft badge-success rounded-full"><i
-                                    class="fa-regular fa-circle-dot"></i> </div>
+                            <div class="size-6 rounded-full"><img src="${priorityImg}" alt="" /> </div>
                             <div class="badge badge-soft  uppercase rounded-full priority">${issue.priority}
                             </div>
                         </div>
