@@ -8,7 +8,7 @@ signIn.addEventListener("click", function () {
 
   if (user == "admin" && pass == "admin123") {
     alert("Login Success");
-    window.location.assign("../dashboard.html");
+    window.location.assign("./dashboard.html");
   } else {
     alert("Please enter a valid credential");
     return;
