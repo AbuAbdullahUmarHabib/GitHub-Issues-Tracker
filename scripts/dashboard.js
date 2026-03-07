@@ -26,8 +26,16 @@ function loadData(data) {
   data.forEach((issue) => {
     const div = document.createElement("div");
 
+    const border = {
+      open: "border-green-500",
+      closed: "border-secondary",
+    };
+
+    const borderClass =
+      border[issue.status.toLowerCase()] || "border-yellow-500";
+
     const card = `                <div class="card bg-base-100 shadow-sm">
-                    <div class="card-body border-t-4 rounded-xl priority">
+                    <div class="card-body border-t-4 ${borderClass} rounded-xl priority">
                         <div class="flex justify-between">
                             <div class="badge h-6 w-6 badge-soft badge-success rounded-full"><i
                                     class="fa-regular fa-circle-dot"></i> </div>
