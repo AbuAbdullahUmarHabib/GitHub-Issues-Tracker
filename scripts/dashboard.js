@@ -182,8 +182,9 @@ function allIssuesTab(data) {
 }
 
 function searchData() {
-  spinner.classList.add("hidden");
   searchBtn.addEventListener("click", async function () {
+    spinner.classList.remove("hidden");
+
     const search = searchInput.value.trim();
     tasks.innerHTML = "";
     const find = await fetch(
@@ -196,6 +197,7 @@ function searchData() {
     }
     loadData(data.data);
     console.log(data);
+    spinner.classList.add("hidden");
   });
 }
 
