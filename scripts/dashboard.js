@@ -5,6 +5,7 @@ const closedIssues = document.getElementById("closeIssues");
 const allIssues = document.getElementById("allIssues");
 const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
+const spinner = document.getElementById("spinner");
 
 // modal related IDs
 const issueDetails = document.getElementById("issueDetails");
@@ -18,6 +19,7 @@ const issueAssignee = document.getElementById("issueAssignee");
 const issuePriority = document.getElementById("issuePriority");
 
 async function dataFetching() {
+  spinner.classList.remove("hidden");
   const res = await fetch(
     "https://phi-lab-server.vercel.app/api/v1/lab/issues",
   );
@@ -34,6 +36,7 @@ async function dataFetching() {
   closeIssues(closedData);
 
   allIssuesTab(data.data);
+  spinner.classList.add("hidden");
 }
 
 function displayModal(issue) {
@@ -137,17 +140,22 @@ function loadData(data) {
 
 function openIssues(openData) {
   allOpenIssues.addEventListener("click", function () {
+    spinner.classList.remove("hidden");
+
     allIssues.classList.remove("btn-primary", "btn-outline");
     closedIssues.classList.remove("btn-primary", "btn-outline");
     allOpenIssues.classList.remove("btn-outline");
     allOpenIssues.classList.add("btn-primary");
 
     tasks.innerHTML = "";
+
     loadData(openData);
+    spinner.classList.add("hidden");
   });
 }
 
 function closeIssues(closedData) {
+  spinner.classList.add("hidden");
   closedIssues.addEventListener("click", function () {
     allIssues.classList.remove("btn-primary", "btn-outline");
     allOpenIssues.classList.remove("btn-primary", "btn-outline");
@@ -156,10 +164,12 @@ function closeIssues(closedData) {
 
     tasks.innerHTML = "";
     loadData(closedData);
+    spinner.classList.add("hidden");
   });
 }
 
 function allIssuesTab(data) {
+  spinner.classList.add("hidden");
   allIssues.addEventListener("click", function () {
     allIssues.classList.remove("btn-primary", "btn-outline");
     allOpenIssues.classList.remove("btn-primary", "btn-outline");
@@ -172,6 +182,7 @@ function allIssuesTab(data) {
 }
 
 function searchData() {
+  spinner.classList.add("hidden");
   searchBtn.addEventListener("click", async function () {
     const search = searchInput.value.trim();
     tasks.innerHTML = "";
