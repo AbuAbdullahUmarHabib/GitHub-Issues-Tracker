@@ -3,6 +3,9 @@ const tasks = document.getElementById("tasks");
 const allOpenIssues = document.getElementById("openIssues");
 const closedIssues = document.getElementById("closeIssues");
 const allIssues = document.getElementById("allIssues");
+const searchInput = document.getElementById("searchInput");
+
+const searchBtn = document.getElementById("searchBtn");
 
 async function dataFetching() {
   const res = await fetch(
@@ -145,6 +148,18 @@ function allIssuesTab(data) {
   });
 }
 
+function searchData() {
+  searchBtn.addEventListener("click", async function () {
+    const find = await fetch(
+      `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchInput.value}`,
+    );
+    const data = await find.json();
+    console.log(data);
+    tasks.innerHTML = "";
+    loadData(data.data);
+  });
+}
+searchData();
 dataFetching();
 
 /* {
