@@ -40,12 +40,39 @@ function loadData(data) {
                         <p class="line-clamp-2">${issue.description}
                         </p>
                         <div class="card-actions">
-                            <div class="badge badge-soft badge-error uppercase rounded-full"><i
-                                    class="fa-solid fa-bug"></i>Error
+                        ${issue.labels
+                          .map((label) => {
+                            const badgeColors = {
+                              help: "badge-warning",
+                              "good first issue": "badge-secondary",
+                              bug: "badge-error",
+                              documentation: "badge-info",
+                              success: "badge-success",
+                              enhancement: "badge-success",
+                              "help wanted": "badge-warning",
+                            };
+                            const badgeIcon = {
+                              help: "fa-life-ring",
+                              "good first issue": "fa-thumbs-up",
+                              bug: "fa-bug",
+                              documentation: "fa-pen-to-square",
+                              success: "badge-success",
+                              enhancement: "fa-wand-sparkles",
+                              "help wanted": "fa-life-ring",
+                            };
+                            const badgeClass =
+                              badgeColors[label.toLowerCase()] ||
+                              "badge-neutral";
+                            const iconClass =
+                              badgeIcon[label.toLowerCase()] || "fa-life-ring";
+                            return `
+                            <div class="badge badge-soft ${badgeClass} uppercase rounded-full">
+                                <i class="fa-solid ${iconClass}"></i >${label}
                             </div>
-                            <div class="badge badge-soft badge-warning uppercase rounded-full"><i
-                                    class="fa-solid fa-life-ring"></i>help wanted
-                            </div>
+                            `;
+                          })
+                          .join("")}
+
                         </div>
                         <div class="divider"></div>
                         <div class="flex flex-col gap-2">
