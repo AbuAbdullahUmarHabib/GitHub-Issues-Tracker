@@ -1,10 +1,10 @@
-const allIssues = document.getElementById("all-issues");
 const totalTask = document.getElementById("total-task");
 const tasks = document.getElementById("tasks");
 const allOpenIssues = document.getElementById("openIssues");
 const closedIssues = document.getElementById("closeIssues");
+const allIssues = document.getElementById("allIssues");
 
-async function allIssue() {
+async function dataFetching() {
   const res = await fetch(
     "https://phi-lab-server.vercel.app/api/v1/lab/issues",
   );
@@ -19,6 +19,8 @@ async function allIssue() {
     (issue) => issue.status.toLowerCase() === "closed",
   );
   closeIssues(closedData);
+
+  allIssuesTab(data.data);
 }
 function loadData(data) {
   data.forEach((issue) => {
@@ -76,90 +78,39 @@ function loadData(data) {
 
 function openIssues(openData) {
   allOpenIssues.addEventListener("click", function () {
+    allIssues.classList.remove("btn-primary", "btn-outline");
+    closedIssues.classList.remove("btn-primary", "btn-outline");
+    allOpenIssues.classList.remove("btn-outline");
+    allOpenIssues.classList.add("btn-primary");
+
     tasks.innerHTML = "";
-    openData.forEach((issue) => {
-      const div = document.createElement("div");
-
-      const card = `                <div class="card bg-base-100 shadow-sm">
-                    <div class="card-body border-t-4 rounded-xl priority">
-                        <div class="flex justify-between">
-                            <div class="badge h-6 w-6 badge-soft badge-success rounded-full"><i
-                                    class="fa-regular fa-circle-dot"></i> </div>
-                            <div class="badge badge-soft  uppercase rounded-full priority">${issue.priority}
-                            </div>
-                        </div>
-                        <h2 class="card-title">
-                            ${issue.title}
-                        </h2>
-                        <p class="line-clamp-2">${issue.description}
-                        </p>
-                        <div class="card-actions">
-                            <div class="badge badge-soft badge-error uppercase rounded-full"><i
-                                    class="fa-solid fa-bug"></i>Error
-                            </div>
-                            <div class="badge badge-soft badge-warning uppercase rounded-full"><i
-                                    class="fa-solid fa-life-ring"></i>help wanted
-                            </div>
-                        </div>
-                        <div class="divider"></div>
-                        <div class="flex flex-col gap-2">
-                            <p class="text-xs text-neutral-500">${issue.author}</p>
-                            <p class="text-xs text-neutral-500">${new Date(issue.createdAt).toLocaleDateString("en-US")}</p>
-                        </div>
-
-                    </div>
-                </div>`;
-
-      div.innerHTML = card;
-      tasks.appendChild(div);
-      totalTask.innerHTML = tasks.children.length;
-    });
+    loadData(openData);
   });
 }
 function closeIssues(closedData) {
   closedIssues.addEventListener("click", function () {
+    allIssues.classList.remove("btn-primary", "btn-outline");
+    allOpenIssues.classList.remove("btn-primary", "btn-outline");
+    closedIssues.classList.remove("btn-outline");
+    closedIssues.classList.add("btn-primary");
+
     tasks.innerHTML = "";
-    closedData.forEach((issue) => {
-      const div = document.createElement("div");
+    loadData(closedData);
+  });
+}
+function allIssuesTab(data) {
+  allIssues.addEventListener("click", function () {
+    allIssues.classList.remove("btn-primary", "btn-outline");
+    allOpenIssues.classList.remove("btn-primary", "btn-outline");
+    closedIssues.classList.remove("btn-primary", "btn-outline");
+    allIssues.classList.add("btn-primary");
 
-      const card = `                <div class="card bg-base-100 shadow-sm">
-                    <div class="card-body border-t-4 rounded-xl priority">
-                        <div class="flex justify-between">
-                            <div class="badge h-6 w-6 badge-soft badge-success rounded-full"><i
-                                    class="fa-regular fa-circle-dot"></i> </div>
-                            <div class="badge badge-soft  uppercase rounded-full priority">${issue.priority}
-                            </div>
-                        </div>
-                        <h2 class="card-title">
-                            ${issue.title}
-                        </h2>
-                        <p class="line-clamp-2">${issue.description}
-                        </p>
-                        <div class="card-actions">
-                            <div class="badge badge-soft badge-error uppercase rounded-full"><i
-                                    class="fa-solid fa-bug"></i>Error
-                            </div>
-                            <div class="badge badge-soft badge-warning uppercase rounded-full"><i
-                                    class="fa-solid fa-life-ring"></i>help wanted
-                            </div>
-                        </div>
-                        <div class="divider"></div>
-                        <div class="flex flex-col gap-2">
-                            <p class="text-xs text-neutral-500">${issue.author}</p>
-                            <p class="text-xs text-neutral-500">${new Date(issue.createdAt).toLocaleDateString("en-US")}</p>
-                        </div>
-
-                    </div>
-                </div>`;
-
-      div.innerHTML = card;
-      tasks.appendChild(div);
-      totalTask.innerHTML = tasks.children.length;
-    });
+    tasks.innerHTML = "";
+    loadData(data);
   });
 }
 
-allIssue();
+dataFetching();
 
 /* {
 "id": 1,
