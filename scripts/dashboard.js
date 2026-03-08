@@ -56,8 +56,8 @@ async function openIssueModal(issueId) {
   issuePriority.textContent = issue.priority;
 
   const statusColors = {
-    open: "badge bg-green-500 text-white rounded-full",
-    closed: "badge bg-gray-500 text-white rounded-full",
+    open: "badge bg-green-500 text-white rounded-full uppercase",
+    closed: "badge bg-gray-500 text-white rounded-full uppercase",
   };
   issueStatusBadge.className =
     statusColors[issue.status.toLowerCase()] ||
