@@ -38,12 +38,63 @@ async function dataFetching() {
   allIssuesTab(data.data);
   spinner.classList.add("hidden");
 }
+async function openIssueModal(issueId) {
+  const res = await fetch(
+    `https://phi-lab-server.vercel.app/api/v1/lab/issue/${issueId}`,
+  );
+  const data = await res.json();
+  const issue = data.data;
 
-function displayModal(issue) {
+  issueTitle.textContent = issue.title;
+  issueStatusBadge.textContent = issue.status;
+  issueAuthor.textContent = issue.author;
+  issueCreatedDate.textContent = new Date(issue.createdAt).toLocaleDateString(
+    "en-US",
+  );
+  issueDescription.textContent = issue.description;
+  issueAssignee.textContent = issue.assignee || "Unassigned";
+  issuePriority.textContent = issue.priority;
+
+  const statusColors = {
+    open: "badge bg-green-500 text-white rounded-full",
+    closed: "badge bg-gray-500 text-white rounded-full",
+  };
+  issueStatusBadge.className =
+    statusColors[issue.status.toLowerCase()] ||
+    "badge bg-yellow-500 text-white";
+
+  const badgeColors = {
+    help: "badge-warning",
+    "good first issue": "badge-secondary",
+    bug: "badge-error",
+    documentation: "badge-info",
+    success: "badge-success",
+    enhancement: "badge-success",
+    "help wanted": "badge-warning",
+  };
+
+  const badgeIcons = {
+    help: "fa-life-ring",
+    "good first issue": "fa-thumbs-up",
+    bug: "fa-bug",
+    documentation: "fa-pen-to-square",
+    success: "fa-circle-check",
+    enhancement: "fa-wand-sparkles",
+    "help wanted": "fa-life-ring",
+  };
+
+  issueLabel.innerHTML = issue.labels
+    .map((label) => {
+      const badgeClass = badgeColors[label.toLowerCase()] || "badge-neutral";
+      const iconClass = badgeIcons[label.toLowerCase()] || "fa-life-ring";
+      return `<div class="badge badge-soft border-2 ${badgeClass} uppercase rounded-full">
+                  <i class="fa-solid ${iconClass}"></i> ${label}
+                </div>`;
+    })
+    .join(" ");
+
   issueDetails.showModal();
-  console.log("hello", issue);
 }
-
 function loadData(data) {
   data.forEach((issue) => {
     const div = document.createElement("div");
@@ -62,7 +113,7 @@ function loadData(data) {
     const borderClass =
       border[issue.status.toLowerCase()] || "border-yellow-500";
     const card = `          
-        <div onclick="displayModal(${issue.title})" class="card bg-base-100 shadow-sm">
+                <div onclick="openIssueModal(${issue.id})" class="card bg-base-100 shadow-sm">
                     <div class="card-body border-t-4 ${borderClass} rounded-xl priority">
                         <div class="flex justify-between">
                             <div class="size-6 rounded-full"><img src="${priorityImg}" alt="" /> </div>
